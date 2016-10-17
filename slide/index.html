@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Slow inputs</title>
+	<style>
+body {
+	font-family: sans-serif;
+	padding: 3em;
+}
+
+.box {
+	width: 250px;
+}
+
+.ph-slide,
+.ph-slide * {
+	box-sizing: border-box;
+}
+.ph-slide {
+	position: relative;
+	border: 1px solid silver;
+	border-radius: 3px;
+	width: 100%;
+	height: 60px;
+	padding: 3px;
+}
+.ph-slide-slider {
+	height: 100%;
+	width: 54px;
+	position: relative;
+	border: 1px solid #999;
+	z-index: 5;
+}
+.ph-slide-slider.move {
+	border-color: red;
+}
+.ph-slide-slider.start {
+	left: 0 !important;
+	transition: .25s;
+}
+	</style>
+</head>
+<body>
+	<div class="box">
+		<div class="ph-slide"></div>
+	</div>
+
+	<script src="slide.js"></script>
+	<script>
+		SlowInput.slide();
+	</script>
+</body>
+</html>
