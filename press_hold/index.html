@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Slow inputs</title>
+	<style>
+body {
+	padding: 3em;
+	font-family: sans-serif;
+}
+.hold-press {
+	box-sizing: border-box;
+	border: 3px solid lightblue;
+	border-radius: 50%;
+	width: 6em;
+	height: 6em;
+	background-color: #eee;
+	margin-bottom: 1em;
+
+
+	cursor: pointer;
+	outline: none;
+	-webkit-tap-highlight-color:  rgba(255, 255, 255, 0);  // Prevent outline box when tapped
+
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+.hold-press.start {
+	border-color: green;
+}
+	</style>
+</head>
+<body>
+	<button class="ph-hold-press" ph-start-class="start">Unlock!<br>Now</button>
+	<br>
+	<button class="ph-hold-press">Second unlock!<br>Now</button>
+
+	<script src="press_hold.js"></script>
+	<script>
+		SlowInput.press_hold();
+	</script>
+</body>
+</html>
