@@ -1,16 +1,17 @@
 var SlowInput;
 (function (SlowInput) {
     var Slide = (function () {
-        function Slide(el) {
+        function Slide(el, tolerance) {
+            if (tolerance === void 0) { tolerance = 5; }
             this.start = ['mousedown'];
             this.move = ['mousemove'];
             this.end = ['mouseup', 'touchend', 'touchcancel', 'mouseout'];
             this.startTouch = ['touchstart'];
             this.moveTouch = ['touchmove'];
-            this.endZoneWidth = 5; // Tolerance to which it can be considered that it was successfully slided
             this.slideClass = "ph-slide";
             this.trackMovement = false;
             this.slide = el;
+            this.endZoneWidth = tolerance;
         }
         Slide.prototype.calcEndPosition = function (slide, slider) {
             function num(value) {
@@ -36,21 +37,24 @@ var SlowInput;
         };
         Slide.prototype.onDragStart = function (getX, e) {
             this.trackMovement = true;
-            this.slider.style.left = "0px"; // Otherwise it might jump on last position once .start is removed
+            this.slider.style.transform = "translateX(0)"; // Otherwise it might jump on last position once .start is removed
             this.slider.classList.remove("start");
             this.slider.classList.add('move');
             this.startX = getX(e);
         };
         Slide.prototype.onDragMove = function (getX, e) {
-            var dist = 0, moved = getX(e);
-            if (this.trackMovement) {
-                dist = Math.min(Math.max(moved - this.startX, 0), this.endX);
-                this.slider.style.left = dist + "px";
-                if (dist >= this.endX && this.trackMovement) {
-                    this.slide.dispatchEvent(new Event('trigger'));
-                    this.onDragEnd();
+            var _this = this;
+            window.requestAnimationFrame(function () {
+                var dist = 0, moved = getX(e);
+                if (_this.trackMovement) {
+                    dist = Math.min(Math.max(moved - _this.startX, 0), _this.endX);
+                    _this.slider.style.transform = "translateX(" + dist + "px)";
+                    if (dist >= _this.endX && _this.trackMovement) {
+                        _this.slide.dispatchEvent(new Event('trigger'));
+                        _this.onDragEnd();
+                    }
                 }
-            }
+            });
         };
         Slide.prototype.onDragEnd = function (e) {
             this.trackMovement = false;
@@ -83,11 +87,12 @@ var SlowInput;
         };
         return Slide;
     }());
-    function slide(selector) {
+    function slide(selector, tolerance) {
+        if (tolerance === void 0) { tolerance = 5; }
         var bind_selector = selector || ".ph-slide", inputs;
         inputs = document.querySelectorAll(bind_selector);
         for (var i = 0; i < inputs.length; i++) {
-            var ph = new Slide(inputs[i]);
+            var ph = new Slide(inputs[i], tolerance);
             ph.init();
         }
     }
